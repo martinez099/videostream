@@ -1,10 +1,11 @@
 import cv2
 import redis
 
-import common
+from common import REDIS_HOST, REDIS_PORT, ENTRY_KEY, STREAM_NAME, log
 
 cam = cv2.VideoCapture(0)
-r = redis.StrictRedis()
+r = redis.StrictRedis(host=REDIS_HOST, port=REDIS_PORT)
+r.flushdb()
 
 while True:
 
@@ -13,19 +14,19 @@ while True:
         ret, frame = cam.read()
 
         if not ret:
-            common.log('could not read from camaera')
+            log('could not read from camera')
             break
 
         ret, buffer = cv2.imencode('.jpg', frame)
 
         if not ret:
-            common.log('could not encode frame')
+            log('could not encode frame')
             break
 
-        r.xadd(common.STREAM_NAME, {common.ENTRY_KEY: buffer.tostring()}, maxlen=1000)
+        r.xadd(STREAM_NAME, {ENTRY_KEY: buffer.tostring()}, maxlen=1000)
 
     except (KeyboardInterrupt, InterruptedError):
-        common.log('quitting ...')
+        log('quitting ...')
         break
 
 cam.release()
