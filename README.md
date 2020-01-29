@@ -6,7 +6,8 @@ It assumes a running Redis instance on localhost:6379.
 ## Prerequisites
 
 - Python 3 including pip
-- a webcam
+- Redis 5
+- a built-in webcam
 
 ## Setup
 
@@ -21,4 +22,3 @@ It assumes a running Redis instance on localhost:6379.
 - run one or multiple consumers
 
 ```python3 consumer.py```
-

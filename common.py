@@ -2,9 +2,9 @@ import uuid
 
 
 REDIS_HOST = "localhost"
-REDIS_PORT = "6379 "
+REDIS_PORT = "6379"
 
-STREAM_KEY = 'videostream:{}'.format(str(uuid.uuid4()))
+STREAM_KEY = 'videostream'
 ENTRY_KEY = b'frame'
 
 

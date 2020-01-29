@@ -10,12 +10,15 @@ try:
     while True:
 
         # read from stream
-        buffer = r.xread({STREAM_KEY: '$'}, block=1000, count=1000)
+        buffer = r.xread({STREAM_KEY: '$'}, block=1000, count=1)
+        if not buffer:
+            continue
+
+        # decode image
+        frame = cv2.imdecode(numpy.frombuffer(buffer[0][1][0][1][ENTRY_KEY], numpy.uint8), 1)
 
         # render framebuffer
-        for i in range(0, len(buffer)):
-            frame = cv2.imdecode(numpy.frombuffer(buffer[i][1][0][1][ENTRY_KEY], numpy.uint8), 1)
-            cv2.imshow('frame', frame)
+        cv2.imshow('frame', frame)
 
         # press 'q' to quit
         if cv2.waitKey(1) & 0xFF == ord('q'):
